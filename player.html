@@ -1,55 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Profile</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body { background:#020617; color:white; }
-.glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #020617;
+  color: white;
+  user-select: none;
+}
+
+/* Banner */
+.banner {
+  background: linear-gradient(135deg, #7f1d1d, #ef4444);
+}
+
+/* Glass Card */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Glow */
+.glow {
+  box-shadow: 0 0 25px rgba(239,68,68,0.4);
+}
+
+/* Stat Box */
+.stat-box {
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
 </style>
+
 </head>
 
-<body class="p-4 pb-20">
+<body class="pb-24">
 
-<div id="player"></div>
-<canvas id="chart" class="mt-6"></canvas>
+<!-- HEADER -->
+<div class="banner h-40 relative">
+
+  <button onclick="history.back()"
+    class="absolute top-4 left-4 bg-black/40 p-2 rounded-full">
+    
+    <!-- Back Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24">
+      <path stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+
+  </button>
+
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="px-4 -mt-16"></div>
+
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around py-3 text-xs">
+
+  <button onclick="location.href='index.html'" class="text-gray-400">Home</button>
+  <button onclick="location.href='players.html'" class="text-gray-400">Players</button>
+  <button onclick="location.href='compare.html'" class="text-gray-400">Compare</button>
+
+</div>
 
 <script>
 const id = new URLSearchParams(location.search).get("id");
 
 fetch('data/players.json')
-.then(r=>r.json())
-.then(players=>{
-  const p = players.find(x=>x.id===id);
+.then(res => res.json())
+.then(players => {
 
-  document.getElementById('player').innerHTML = `
+  const p = players.find(x => x.id === id);
+
+  document.getElementById("profile").innerHTML = `
+  
+    <!-- IMAGE + NAME -->
     <div class="text-center">
-      <img src="${p.image}" class="w-24 h-24 rounded-full mx-auto mb-2">
-      <h1 class="text-2xl font-bold">${p.name}</h1>
-      <p>#${p.jersey}</p>
+
+      <img src="${p.image}"
+        class="w-28 h-28 rounded-full mx-auto border-4 border-red-500 glow">
+
+      <h1 class="text-xl font-semibold mt-3">${p.name}</h1>
+      <p class="text-gray-400 text-sm">Jersey #${p.jersey}</p>
+
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mt-4">
-      <div class="glass p-3">Runs: ${p.runs}</div>
-      <div class="glass p-3">6s: ${p.sixes}</div>
-      <div class="glass p-3">4s: ${p.fours}</div>
-      <div class="glass p-3">Wickets: ${p.wickets}</div>
+    <!-- QUICK STATS -->
+    <div class="grid grid-cols-3 gap-3 mt-6">
+
+      <div class="stat-box">
+        <p class="text-red-400 text-xs">Runs</p>
+        <p class="font-bold">${p.runs}</p>
+      </div>
+
+      <div class="stat-box">
+        <p class="text-red-400 text-xs">Matches</p>
+        <p class="font-bold">${p.matches}</p>
+      </div>
+
+      <div class="stat-box">
+        <p class="text-red-400 text-xs">Wickets</p>
+        <p class="font-bold">${p.wickets}</p>
+      </div>
+
     </div>
+
+    <!-- FULL STATS -->
+    <div class="card p-4 mt-6">
+
+      <h2 class="text-sm text-gray-400 mb-3">Performance Stats</h2>
+
+      <div class="grid grid-cols-2 gap-3 text-sm">
+
+        <div class="stat-box">
+          <p class="text-red-400">Highest Score</p>
+          <p>${p.highest || 0}</p>
+        </div>
+
+        <div class="stat-box">
+          <p class="text-red-400">50s</p>
+          <p>${p.fifties || 0}</p>
+        </div>
+
+        <div class="stat-box">
+          <p class="text-red-400">100s</p>
+          <p>${p.hundreds || 0}</p>
+        </div>
+
+        <div class="stat-box">
+          <p class="text-red-400">6s</p>
+          <p>${p.sixes}</p>
+        </div>
+
+        <div class="stat-box">
+          <p class="text-red-400">4s</p>
+          <p>${p.fours}</p>
+        </div>
+
+        <div class="stat-box">
+          <p class="text-red-400">Strike Rate</p>
+          <p>${p.strike || 0}</p>
+        </div>
+
+      </div>
+
+    </div>
+
   `;
-
-  new Chart(document.getElementById("chart"),{
-    type:"radar",
-    data:{
-      labels:["Runs","6s","4s","Wickets"],
-      datasets:[{
-        data:[p.runs,p.sixes,p.fours,p.wickets]
-      }]
-    }
-  });
 });
 </script>
 
