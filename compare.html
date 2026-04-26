@@ -2,28 +2,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Compare Players</title>
+<title>Compare</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/app.js"></script>
 
+<style>
+body { background:#020617; color:white; }
+.glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); }
+</style>
 </head>
 
-<body class="bg-black text-white p-6">
+<body class="p-4 pb-20">
 
-<h1 class="text-3xl mb-6">🆚 Player Comparison</h1>
+<h1 class="text-2xl mb-4">🆚 Compare Players</h1>
 
-<div class="grid md:grid-cols-2 gap-4 mb-6">
-<select id="p1" class="p-3 bg-slate-800 rounded"></select>
-<select id="p2" class="p-3 bg-slate-800 rounded"></select>
-</div>
+<select id="p1" class="w-full p-3 bg-slate-800 mb-3"></select>
+<select id="p2" class="w-full p-3 bg-slate-800 mb-3"></select>
 
-<button onclick="comparePlayers()" class="bg-green-500 px-6 py-2 rounded">
-Compare
-</button>
+<button onclick="compare()" class="glass px-6 py-2">Compare</button>
 
-<canvas id="compareChart" class="mt-10"></canvas>
+<canvas id="chart" class="mt-6"></canvas>
+
+<script>
+let players = [];
+
+fetch('data/players.json')
+.then(r=>r.json())
+.then(data=>{
+  players = data;
+  data.forEach(p=>{
+    p1.innerHTML += `<option value=\"${p.id}\">${p.name}</option>`;
+    p2.innerHTML += `<option value=\"${p.id}\">${p.name}</option>`;
+  });
+});
+
+function compare(){
+  const a = players.find(p=>p.id===p1.value);
+  const b = players.find(p=>p.id===p2.value);
+
+  new Chart(document.getElementById("chart"),{
+    type:"bar",
+    data:{
+      labels:["Runs","6s","4s","Wickets"],
+      datasets:[
+        {label:a.name,data:[a.runs,a.sixes,a.fours,a.wickets]},
+        {label:b.name,data:[b.runs,b.sixes,b.fours,b.wickets]}
+      ]
+    }
+  });
+}
+</script>
 
 </body>
 </html>
