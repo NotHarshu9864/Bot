@@ -1,38 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gully Cricket League</title>
+<title>Gully League</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body { font-family: 'Poppins', sans-serif; }
+body { background:#020617; color:white; }
+.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
 </style>
 </head>
 
-<body class="bg-gradient-to-br from-black to-slate-900 text-white">
+<body class="flex flex-col justify-center items-center min-h-screen text-center">
 
-<div class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+<h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+🏏 Gully League
+</h1>
 
-<h1 class="text-5xl font-bold mb-6 animate-pulse">🏏 Gully Cricket League</h1>
-
-<p class="text-gray-400 mb-8 max-w-xl">
-Track performance, compare players, view stats like IPL apps.
-</p>
+<p class="text-gray-400 mb-8">Track stats like IPL apps</p>
 
 <div class="flex gap-4">
-<button onclick="location.href='players.html'" class="bg-green-500 px-6 py-3 rounded-xl hover:scale-105 transition">
-View Players
-</button>
-
-<button onclick="location.href='compare.html'" class="bg-blue-500 px-6 py-3 rounded-xl hover:scale-105 transition">
-Compare Players
-</button>
-</div>
-
+<button onclick="location.href='players.html'" class="glass px-6 py-3 hover:scale-105 transition">Players</button>
+<button onclick="location.href='compare.html'" class="glass px-6 py-3 hover:scale-105 transition">Compare</button>
 </div>
 
 </body>
