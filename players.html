@@ -5,32 +5,76 @@
 <title>Players</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="js/app.js"></script>
 
+<style>
+body { background:#020617; color:white; }
+.glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:16px; }
+.card:hover { transform:scale(1.05); }
+</style>
 </head>
 
-<body class="bg-slate-950 text-white p-6">
+<body class="p-4 pb-20">
 
-<h1 class="text-3xl font-bold mb-4">Players</h1>
+<h1 class="text-3xl mb-4 font-bold">🏏 Players</h1>
 
-<input id="search" placeholder="Search player..." class="w-full p-3 bg-slate-800 rounded mb-6">
+<input id="search" placeholder="Search..." class="w-full p-3 rounded bg-slate-800 mb-6">
 
-<div class="grid md:grid-cols-2 gap-6 mb-10">
-  <div class="bg-slate-800 p-4 rounded">
-    <h2>🔥 Most Runs</h2>
+<!-- Leaderboards -->
+<div class="grid grid-cols-2 gap-4 mb-6">
+  <div class="glass p-4">
+    <h2>🔥 Top Runs</h2>
     <div id="runs"></div>
   </div>
-
-  <div class="bg-slate-800 p-4 rounded">
-    <h2>🎯 Most Wickets</h2>
+  <div class="glass p-4">
+    <h2>🎯 Top Wickets</h2>
     <div id="wickets"></div>
   </div>
 </div>
 
-<div id="players" class="grid md:grid-cols-4 gap-6"></div>
+<div id="players" class="grid grid-cols-2 gap-4"></div>
+
+<!-- Bottom Nav -->
+<div class="fixed bottom-0 left-0 right-0 bg-black p-3 flex justify-around border-t border-gray-700">
+<button onclick="location.href='index.html'">🏠</button>
+<button onclick="location.href='compare.html'">🆚</button>
+</div>
 
 <script>
-initPlayersPage();
+let players = [];
+
+fetch('data/players.json')
+.then(r=>r.json())
+.then(data=>{
+  players = data;
+  render(players);
+  leaderboard();
+});
+
+function render(list){
+  document.getElementById('players').innerHTML = list.map(p=>`
+    <div onclick="location.href='player.html?id=${p.id}'" class="glass card p-4 text-center cursor-pointer">
+      <img src="${p.image}" class="w-16 h-16 rounded-full mx-auto mb-2">
+      <h3>${p.name}</h3>
+      <p class="text-gray-400">#${p.jersey}</p>
+    </div>
+  `).join('');
+}
+
+function leaderboard(){
+  let runs = [...players].sort((a,b)=>b.runs-a.runs);
+  let wickets = [...players].sort((a,b)=>b.wickets-a.wickets);
+
+  document.getElementById('runs').innerHTML =
+    runs.map((p,i)=>`<p>${i+1}. ${p.name} (${p.runs})</p>`).join('');
+
+  document.getElementById('wickets').innerHTML =
+    wickets.map((p,i)=>`<p>${i+1}. ${p.name} (${p.wickets})</p>`).join('');
+}
+
+document.getElementById('search').addEventListener('input',e=>{
+  const val = e.target.value.toLowerCase();
+  render(players.filter(p=>p.name.toLowerCase().includes(val)));
+});
 </script>
 
 </body>
