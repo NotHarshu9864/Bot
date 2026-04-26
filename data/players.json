@@ -8,7 +8,11 @@
     "sixes": 4,
     "fours": 6,
     "matches": 5,
-    "wickets": 6
+    "wickets": 6,
+    "highest": 23,
+    "fifties": 0,
+    "hundreds": 0,
+    "strike": 145
   },
   {
     "id": "Preet",
@@ -19,6 +23,10 @@
     "sixes": 13,
     "fours": 3,
     "matches": 5,
-    "wickets": 4
+    "wickets": 4,
+    "highest": 44,
+    "fifties": 0,
+    "hundreds": 0,
+    "strike": 222
   }
 ]
