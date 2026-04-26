@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Players - Gully League</title>
+<title>Players</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -14,9 +14,10 @@ body {
   font-family: 'Poppins', sans-serif;
   background: #020617;
   color: white;
+  user-select: none; /* disable copy */
 }
 
-/* Glass Card */
+/* Cards */
 .card {
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
@@ -25,31 +26,21 @@ body {
   border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Glow Effects */
-.glow-red {
-  box-shadow: 0 0 20px rgba(239,68,68,0.5);
-}
-
-.glow-soft {
-  box-shadow: 0 0 10px rgba(239,68,68,0.3);
-}
-
-/* Hover Animation */
 .card:hover {
-  transform: translateY(-6px) scale(1.03);
+  transform: scale(1.04);
   box-shadow: 0 0 25px rgba(239,68,68,0.4);
 }
 
-/* Rank Styles */
-.rank-1 { color: gold; text-shadow: 0 0 10px gold; }
-.rank-2 { color: silver; text-shadow: 0 0 10px silver; }
-.rank-3 { color: #cd7f32; text-shadow: 0 0 10px #cd7f32; }
+/* Glow */
+.glow {
+  box-shadow: 0 0 20px rgba(239,68,68,0.4);
+}
 
-/* Gradient Text */
-.gradient-text {
-  background: linear-gradient(to right, #ef4444, #f87171);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Active nav button */
+.active-nav {
+  background: #ef4444;
+  border-radius: 999px;
+  padding: 8px 14px;
 }
 </style>
 
@@ -57,42 +48,40 @@ body {
 
 <body class="pb-24">
 
-<!-- ================= HEADER ================= -->
-<div class="p-4 flex justify-between items-center border-b border-gray-800">
+<!-- HEADER -->
+<div class="p-4 border-b border-gray-800 flex justify-between items-center">
 
-  <h1 class="text-xl font-bold gradient-text">🏏 Players</h1>
+  <h1 class="text-lg font-semibold">Players</h1>
 
-  <button onclick="location.href='index.html'" class="text-sm text-gray-400 hover:text-red-400">
+  <button onclick="location.href='index.html'" class="text-gray-400 text-sm">
     Home
   </button>
 
 </div>
 
-<!-- ================= SEARCH ================= -->
+<!-- SEARCH -->
 <div class="p-4">
-
   <input id="search"
-    placeholder="Search player..."
+    placeholder="Search players..."
     class="w-full p-3 rounded-xl bg-slate-800 outline-none focus:ring-2 focus:ring-red-500">
-
 </div>
 
-<!-- ================= LEADERBOARD ================= -->
-<div class="px-4">
+<!-- LEADERBOARD -->
+<div class="px-4 mb-6">
 
-  <h2 class="text-lg font-semibold mb-3">🔥 Leaderboard</h2>
+  <h2 class="text-sm text-gray-400 mb-3">Leaderboard</h2>
 
   <div class="grid grid-cols-2 gap-4">
 
-    <!-- Runs -->
-    <div class="card p-4 glow-soft">
-      <h3 class="text-red-400 mb-2 text-sm">Top Runs</h3>
+    <!-- RUNS -->
+    <div class="card p-4 glow">
+      <h3 class="text-red-400 text-sm mb-2">Top Runs</h3>
       <div id="runs"></div>
     </div>
 
-    <!-- Wickets -->
-    <div class="card p-4 glow-soft">
-      <h3 class="text-red-400 mb-2 text-sm">Top Wickets</h3>
+    <!-- WICKETS -->
+    <div class="card p-4 glow">
+      <h3 class="text-red-400 text-sm mb-2">Top Wickets</h3>
       <div id="wickets"></div>
     </div>
 
@@ -100,27 +89,41 @@ body {
 
 </div>
 
-<!-- ================= PLAYERS GRID ================= -->
-<div class="p-4">
+<!-- PLAYERS -->
+<div class="px-4">
+  <div id="players" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+</div>
 
-  <h2 class="text-lg font-semibold mb-3">All Players</h2>
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around py-3">
 
-  <div id="players"
-    class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-  </div>
+  <!-- Home -->
+  <button onclick="location.href='index.html'" class="flex flex-col items-center text-gray-400 text-xs">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" d="M3 10l9-7 9 7v10a1 1 0 01-1 1h-6v-6H10v6H4a1 1 0 01-1-1z"/>
+    </svg>
+    Home
+  </button>
+
+  <!-- Players ACTIVE -->
+  <button class="flex flex-col items-center text-white text-xs active-nav">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" d="M17 20h5V4H2v16h5m10 0v-6H7v6m10 0H7"/>
+    </svg>
+    Players
+  </button>
+
+  <!-- Compare -->
+  <button onclick="location.href='compare.html'" class="flex flex-col items-center text-gray-400 text-xs">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" d="M4 6h16M4 12h10M4 18h7"/>
+    </svg>
+    Compare
+  </button>
 
 </div>
 
-<!-- ================= BOTTOM NAV ================= -->
-<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around py-3 text-sm">
-
-  <button onclick="location.href='index.html'" class="text-gray-400">🏠</button>
-  <button class="text-red-500">👥</button>
-  <button onclick="location.href='compare.html'" class="text-gray-400">🆚</button>
-
-</div>
-
-<!-- ================= SCRIPT ================= -->
+<!-- SCRIPT -->
 <script>
 let players = [];
 
@@ -132,78 +135,55 @@ fetch('data/players.json')
   renderLeaderboard();
 });
 
-/* ================= RENDER PLAYERS ================= */
+/* PLAYERS */
 function renderPlayers(list) {
-  const container = document.getElementById("players");
-
-  container.innerHTML = list.map(p => `
+  document.getElementById("players").innerHTML = list.map(p => `
     <div onclick="location.href='player.html?id=${p.id}'"
       class="card p-4 text-center cursor-pointer">
 
       <img src="${p.image}"
-        class="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-red-500 glow-soft">
+        class="w-16 h-16 rounded-full mx-auto mb-2 border border-red-500">
 
-      <h3 class="font-semibold">${p.name}</h3>
-      <p class="text-gray-400 text-sm mb-2">#${p.jersey}</p>
+      <h3 class="text-sm font-medium">${p.name}</h3>
+      <p class="text-gray-400 text-xs mb-2">#${p.jersey}</p>
 
-      <div class="grid grid-cols-3 text-xs gap-1 mt-2">
-
-        <div>
-          <p class="text-red-400">Runs</p>
-          <p>${p.runs}</p>
-        </div>
-
-        <div>
-          <p class="text-red-400">Wkts</p>
-          <p>${p.wickets}</p>
-        </div>
-
-        <div>
-          <p class="text-red-400">Mat</p>
-          <p>${p.matches}</p>
-        </div>
-
+      <div class="flex justify-between text-xs text-gray-300 mt-2">
+        <span>R: ${p.runs}</span>
+        <span>W: ${p.wickets}</span>
+        <span>M: ${p.matches}</span>
       </div>
 
     </div>
   `).join('');
 }
 
-/* ================= LEADERBOARD ================= */
+/* LEADERBOARD (TOP 3 ONLY) */
 function renderLeaderboard() {
 
-  let runs = [...players].sort((a,b)=>b.runs-a.runs);
-  let wickets = [...players].sort((a,b)=>b.wickets-a.wickets);
+  let runs = [...players].sort((a,b)=>b.runs-a.runs).slice(0,3);
+  let wickets = [...players].sort((a,b)=>b.wickets-a.wickets).slice(0,3);
 
   document.getElementById("runs").innerHTML =
-    runs.slice(0,5).map((p,i)=>`
+    runs.map((p,i)=>`
       <div class="flex justify-between text-sm mb-1">
-        <span class="${rankClass(i)}">${i+1}. ${p.name}</span>
+        <span>${i+1}. ${p.name}</span>
         <span>${p.runs}</span>
       </div>
     `).join('');
 
   document.getElementById("wickets").innerHTML =
-    wickets.slice(0,5).map((p,i)=>`
+    wickets.map((p,i)=>`
       <div class="flex justify-between text-sm mb-1">
-        <span class="${rankClass(i)}">${i+1}. ${p.name}</span>
+        <span>${i+1}. ${p.name}</span>
         <span>${p.wickets}</span>
       </div>
     `).join('');
 }
 
-function rankClass(i){
-  if(i===0) return "rank-1";
-  if(i===1) return "rank-2";
-  if(i===2) return "rank-3";
-  return "";
-}
-
-/* ================= SEARCH ================= */
+/* SEARCH */
 document.getElementById("search").addEventListener("input", e=>{
   const val = e.target.value.toLowerCase();
-  const filtered = players.filter(p => p.name.toLowerCase().includes(val));
-  renderPlayers(filtered);
+  renderPlayers(players.filter(p=>p.name.toLowerCase().includes(val)));
 });
 </script>
 
