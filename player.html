@@ -6,18 +6,51 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/app.js"></script>
 
+<style>
+body { background:#020617; color:white; }
+.glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); }
+</style>
 </head>
 
-<body class="bg-black text-white p-6">
+<body class="p-4 pb-20">
 
 <div id="player"></div>
-
-<canvas id="chart" class="mt-10"></canvas>
+<canvas id="chart" class="mt-6"></canvas>
 
 <script>
-loadSinglePlayer();
+const id = new URLSearchParams(location.search).get("id");
+
+fetch('data/players.json')
+.then(r=>r.json())
+.then(players=>{
+  const p = players.find(x=>x.id===id);
+
+  document.getElementById('player').innerHTML = `
+    <div class="text-center">
+      <img src="${p.image}" class="w-24 h-24 rounded-full mx-auto mb-2">
+      <h1 class="text-2xl font-bold">${p.name}</h1>
+      <p>#${p.jersey}</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div class="glass p-3">Runs: ${p.runs}</div>
+      <div class="glass p-3">6s: ${p.sixes}</div>
+      <div class="glass p-3">4s: ${p.fours}</div>
+      <div class="glass p-3">Wickets: ${p.wickets}</div>
+    </div>
+  `;
+
+  new Chart(document.getElementById("chart"),{
+    type:"radar",
+    data:{
+      labels:["Runs","6s","4s","Wickets"],
+      datasets:[{
+        data:[p.runs,p.sixes,p.fours,p.wickets]
+      }]
+    }
+  });
+});
 </script>
 
 </body>
