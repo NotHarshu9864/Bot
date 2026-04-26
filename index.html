@@ -1,33 +1,224 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Gully League</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gully Cricket League</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body { background:#020617; color:white; }
-.glass {
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #020617;
+  color: white;
+}
+
+/* Glow Effects */
+.glow-red {
+  box-shadow: 0 0 20px rgba(239,68,68,0.6);
+}
+
+.card {
   background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(to right, #ef4444, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>
+
 </head>
 
-<body class="flex flex-col justify-center items-center min-h-screen text-center">
+<body>
 
-<h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-🏏 Gully League
-</h1>
+<!-- ================= NAVBAR ================= -->
+<nav class="flex justify-between items-center p-4 border-b border-gray-800">
+  <h1 class="text-xl font-bold gradient-text">🏏 Gully League</h1>
 
-<p class="text-gray-400 mb-8">Track stats like IPL apps</p>
+  <div class="flex gap-4 text-sm">
+    <a href="players.html" class="hover:text-red-400">Players</a>
+    <a href="compare.html" class="hover:text-red-400">Compare</a>
+  </div>
+</nav>
 
-<div class="flex gap-4">
-<button onclick="location.href='players.html'" class="glass px-6 py-3 hover:scale-105 transition">Players</button>
-<button onclick="location.href='compare.html'" class="glass px-6 py-3 hover:scale-105 transition">Compare</button>
-</div>
+<!-- ================= HERO SECTION ================= -->
+<section class="text-center px-6 py-12">
+
+  <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text leading-tight">
+    Track Gully Cricket Like IPL Pros
+  </h1>
+
+  <p class="text-gray-400 max-w-xl mx-auto mb-8">
+    Welcome to Gully Cricket League — your ultimate platform to track player performance,
+    compare stats, and dominate your local cricket scene like professional leagues.
+  </p>
+
+  <div class="flex justify-center gap-4 flex-wrap">
+    <button onclick="location.href='players.html'"
+      class="bg-red-500 px-6 py-3 rounded-xl glow-red hover:scale-105 transition">
+      View Players
+    </button>
+
+    <button onclick="location.href='compare.html'"
+      class="bg-gray-800 px-6 py-3 rounded-xl hover:bg-red-500 transition">
+      Compare Players
+    </button>
+  </div>
+
+</section>
+
+<!-- ================= STATS PREVIEW ================= -->
+<section class="px-6 py-10">
+
+  <h2 class="text-2xl font-bold mb-6">🔥 League Highlights</h2>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+    <div class="card p-4 text-center">
+      <h3 class="text-red-400 text-sm">Total Matches</h3>
+      <p class="text-2xl font-bold">120</p>
+    </div>
+
+    <div class="card p-4 text-center">
+      <h3 class="text-red-400 text-sm">Total Runs</h3>
+      <p class="text-2xl font-bold">12,450</p>
+    </div>
+
+    <div class="card p-4 text-center">
+      <h3 class="text-red-400 text-sm">Total Wickets</h3>
+      <p class="text-2xl font-bold">530</p>
+    </div>
+
+    <div class="card p-4 text-center">
+      <h3 class="text-red-400 text-sm">Centuries</h3>
+      <p class="text-2xl font-bold">18</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= FEATURED PLAYER ================= -->
+<section class="px-6 py-10">
+
+  <h2 class="text-2xl font-bold mb-6">⭐ Featured Player</h2>
+
+  <div class="card p-6 flex flex-col md:flex-row items-center gap-6">
+
+    <img src="https://i.pravatar.cc/150?img=12"
+      class="w-24 h-24 rounded-full border-2 border-red-500">
+
+    <div class="text-center md:text-left">
+      <h3 class="text-xl font-bold">Preet Singh</h3>
+      <p class="text-gray-400 mb-2">Jersey #45</p>
+
+      <div class="grid grid-cols-3 gap-3 text-sm mt-3">
+
+        <div>
+          <p class="text-red-400">Runs</p>
+          <p>79</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">Matches</p>
+          <p>5</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">Wickets</p>
+          <p>4</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">Highest</p>
+          <p>44*</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">50s</p>
+          <p>0</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">100s</p>
+          <p>0</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="px-6 py-10">
+
+  <h2 class="text-2xl font-bold mb-6">🚀 Features</h2>
+
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <div class="card p-5">
+      <h3 class="text-red-400 mb-2 font-semibold">📊 Player Stats</h3>
+      <p class="text-gray-400 text-sm">
+        Track complete stats including runs, wickets, strike rates and more.
+      </p>
+    </div>
+
+    <div class="card p-5">
+      <h3 class="text-red-400 mb-2 font-semibold">🆚 Comparison</h3>
+      <p class="text-gray-400 text-sm">
+        Compare two players side-by-side and analyze performance easily.
+      </p>
+    </div>
+
+    <div class="card p-5">
+      <h3 class="text-red-400 mb-2 font-semibold">🏆 Leaderboards</h3>
+      <p class="text-gray-400 text-sm">
+        See top performers ranked automatically based on stats.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="px-6 py-16 text-center">
+
+  <h2 class="text-3xl font-bold mb-4 gradient-text">
+    Ready to Track Your Game?
+  </h2>
+
+  <p class="text-gray-400 mb-6">
+    Join the Gully League and make every match count.
+  </p>
+
+  <button onclick="location.href='players.html'"
+    class="bg-red-500 px-8 py-3 rounded-xl glow-red hover:scale-105 transition">
+    Get Started
+  </button>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="text-center text-gray-500 text-sm py-6 border-t border-gray-800">
+  © 2026 Gully Cricket League • Built like IPL Experience
+</footer>
 
 </body>
 </html>
