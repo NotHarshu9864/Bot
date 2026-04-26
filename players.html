@@ -1,79 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Players</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Players - Gully League</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body { background:#020617; color:white; }
-.glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:16px; }
-.card:hover { transform:scale(1.05); }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #020617;
+  color: white;
+}
+
+/* Glass Card */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  transition: 0.3s;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Glow Effects */
+.glow-red {
+  box-shadow: 0 0 20px rgba(239,68,68,0.5);
+}
+
+.glow-soft {
+  box-shadow: 0 0 10px rgba(239,68,68,0.3);
+}
+
+/* Hover Animation */
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 0 25px rgba(239,68,68,0.4);
+}
+
+/* Rank Styles */
+.rank-1 { color: gold; text-shadow: 0 0 10px gold; }
+.rank-2 { color: silver; text-shadow: 0 0 10px silver; }
+.rank-3 { color: #cd7f32; text-shadow: 0 0 10px #cd7f32; }
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(to right, #ef4444, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>
+
 </head>
 
-<body class="p-4 pb-20">
+<body class="pb-24">
 
-<h1 class="text-3xl mb-4 font-bold">🏏 Players</h1>
+<!-- ================= HEADER ================= -->
+<div class="p-4 flex justify-between items-center border-b border-gray-800">
 
-<input id="search" placeholder="Search..." class="w-full p-3 rounded bg-slate-800 mb-6">
+  <h1 class="text-xl font-bold gradient-text">🏏 Players</h1>
 
-<!-- Leaderboards -->
-<div class="grid grid-cols-2 gap-4 mb-6">
-  <div class="glass p-4">
-    <h2>🔥 Top Runs</h2>
-    <div id="runs"></div>
-  </div>
-  <div class="glass p-4">
-    <h2>🎯 Top Wickets</h2>
-    <div id="wickets"></div>
-  </div>
+  <button onclick="location.href='index.html'" class="text-sm text-gray-400 hover:text-red-400">
+    Home
+  </button>
+
 </div>
 
-<div id="players" class="grid grid-cols-2 gap-4"></div>
+<!-- ================= SEARCH ================= -->
+<div class="p-4">
 
-<!-- Bottom Nav -->
-<div class="fixed bottom-0 left-0 right-0 bg-black p-3 flex justify-around border-t border-gray-700">
-<button onclick="location.href='index.html'">🏠</button>
-<button onclick="location.href='compare.html'">🆚</button>
+  <input id="search"
+    placeholder="Search player..."
+    class="w-full p-3 rounded-xl bg-slate-800 outline-none focus:ring-2 focus:ring-red-500">
+
 </div>
 
+<!-- ================= LEADERBOARD ================= -->
+<div class="px-4">
+
+  <h2 class="text-lg font-semibold mb-3">🔥 Leaderboard</h2>
+
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- Runs -->
+    <div class="card p-4 glow-soft">
+      <h3 class="text-red-400 mb-2 text-sm">Top Runs</h3>
+      <div id="runs"></div>
+    </div>
+
+    <!-- Wickets -->
+    <div class="card p-4 glow-soft">
+      <h3 class="text-red-400 mb-2 text-sm">Top Wickets</h3>
+      <div id="wickets"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= PLAYERS GRID ================= -->
+<div class="p-4">
+
+  <h2 class="text-lg font-semibold mb-3">All Players</h2>
+
+  <div id="players"
+    class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+  </div>
+
+</div>
+
+<!-- ================= BOTTOM NAV ================= -->
+<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around py-3 text-sm">
+
+  <button onclick="location.href='index.html'" class="text-gray-400">🏠</button>
+  <button class="text-red-500">👥</button>
+  <button onclick="location.href='compare.html'" class="text-gray-400">🆚</button>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
 <script>
 let players = [];
 
 fetch('data/players.json')
-.then(r=>r.json())
-.then(data=>{
+.then(res => res.json())
+.then(data => {
   players = data;
-  render(players);
-  leaderboard();
+  renderPlayers(players);
+  renderLeaderboard();
 });
 
-function render(list){
-  document.getElementById('players').innerHTML = list.map(p=>`
-    <div onclick="location.href='player.html?id=${p.id}'" class="glass card p-4 text-center cursor-pointer">
-      <img src="${p.image}" class="w-16 h-16 rounded-full mx-auto mb-2">
-      <h3>${p.name}</h3>
-      <p class="text-gray-400">#${p.jersey}</p>
+/* ================= RENDER PLAYERS ================= */
+function renderPlayers(list) {
+  const container = document.getElementById("players");
+
+  container.innerHTML = list.map(p => `
+    <div onclick="location.href='player.html?id=${p.id}'"
+      class="card p-4 text-center cursor-pointer">
+
+      <img src="${p.image}"
+        class="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-red-500 glow-soft">
+
+      <h3 class="font-semibold">${p.name}</h3>
+      <p class="text-gray-400 text-sm mb-2">#${p.jersey}</p>
+
+      <div class="grid grid-cols-3 text-xs gap-1 mt-2">
+
+        <div>
+          <p class="text-red-400">Runs</p>
+          <p>${p.runs}</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">Wkts</p>
+          <p>${p.wickets}</p>
+        </div>
+
+        <div>
+          <p class="text-red-400">Mat</p>
+          <p>${p.matches}</p>
+        </div>
+
+      </div>
+
     </div>
   `).join('');
 }
 
-function leaderboard(){
+/* ================= LEADERBOARD ================= */
+function renderLeaderboard() {
+
   let runs = [...players].sort((a,b)=>b.runs-a.runs);
   let wickets = [...players].sort((a,b)=>b.wickets-a.wickets);
 
-  document.getElementById('runs').innerHTML =
-    runs.map((p,i)=>`<p>${i+1}. ${p.name} (${p.runs})</p>`).join('');
+  document.getElementById("runs").innerHTML =
+    runs.slice(0,5).map((p,i)=>`
+      <div class="flex justify-between text-sm mb-1">
+        <span class="${rankClass(i)}">${i+1}. ${p.name}</span>
+        <span>${p.runs}</span>
+      </div>
+    `).join('');
 
-  document.getElementById('wickets').innerHTML =
-    wickets.map((p,i)=>`<p>${i+1}. ${p.name} (${p.wickets})</p>`).join('');
+  document.getElementById("wickets").innerHTML =
+    wickets.slice(0,5).map((p,i)=>`
+      <div class="flex justify-between text-sm mb-1">
+        <span class="${rankClass(i)}">${i+1}. ${p.name}</span>
+        <span>${p.wickets}</span>
+      </div>
+    `).join('');
 }
 
-document.getElementById('search').addEventListener('input',e=>{
+function rankClass(i){
+  if(i===0) return "rank-1";
+  if(i===1) return "rank-2";
+  if(i===2) return "rank-3";
+  return "";
+}
+
+/* ================= SEARCH ================= */
+document.getElementById("search").addEventListener("input", e=>{
   const val = e.target.value.toLowerCase();
-  render(players.filter(p=>p.name.toLowerCase().includes(val)));
+  const filtered = players.filter(p => p.name.toLowerCase().includes(val));
+  renderPlayers(filtered);
 });
 </script>
 
