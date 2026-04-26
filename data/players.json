@@ -1,0 +1,24 @@
+[
+  {
+    "id": "krishna",
+    "name": "Krishna",
+    "image": "https://i.pravatar.cc/150?img=3",
+    "jersey": 18,
+    "runs": 48,
+    "sixes": 4,
+    "fours": 6,
+    "matches": 5,
+    "wickets": 6
+  },
+  {
+    "id": "Preet",
+    "name": "Preet Singh",
+    "image": "https://i.pravatar.cc/150?img=5",
+    "jersey": 45,
+    "runs": 79,
+    "sixes": 13,
+    "fours": 3,
+    "matches": 5,
+    "wickets": 4
+  }
+]
